@@ -1,0 +1,1995 @@
+{
+  "info": {
+    "_postman_id": "dd3ba27a-75ab-46fd-a2bf-af6671f89687",
+    "name": "Amanah Auth API",
+    "description": "REST API autentikasi: Login Email, Login WhatsApp + OTP, Register, Lupa Password + OTP.\n\n**Format response**\n- Sukses: `{ \"success\": true, \"message\": \"...\", \"data\": {...} }`\n- Error:  `{ \"success\": false, \"error\": { \"code\": \"...\", \"message\": \"...\", \"details\": {...} } }`\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46922762"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "v1",
+          "item": [
+            {
+              "name": "auth",
+              "item": [
+                {
+                  "name": "register",
+                  "item": [
+                    {
+                      "name": "Buat akun baru",
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"full_name\": \"Budi Santoso\",\n  \"email\": \"budi.santoso@gmail.com\",\n  \"phone\": \"812-3456-7890\",\n  \"password\": \"Rahasia@123\",\n  \"confirm_password\": \"Rahasia@123\",\n  \"accept_terms\": true\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "Akun dibuat",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"full_name\": \"Budi Santoso\",\n  \"email\": \"budi.santoso@gmail.com\",\n  \"phone\": \"812-3456-7890\",\n  \"password\": \"Rahasia@123\",\n  \"confirm_password\": \"Rahasia@123\",\n  \"accept_terms\": true\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/register",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "register"
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"data\": {\n    \"access_token\": \"string\",\n    \"refresh_token\": \"string\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 900,\n    \"user\": {\n      \"id\": \"5e5afcfb-8f69-66f9-94ee-63416391a604\",\n      \"full_name\": \"string\",\n      \"username\": \"string\",\n      \"email\": \"string\",\n      \"phone\": \"+6281234567890\",\n      \"email_verified\": true,\n      \"phone_verified\": true,\n      \"created_at\": \"2014-08-28T01:16:47.825Z\"\n    }\n  }\n}"
+                        },
+                        {
+                          "name": "Email dan/atau nomor WhatsApp sudah terdaftar",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"full_name\": \"Budi Santoso\",\n  \"email\": \"budi.santoso@gmail.com\",\n  \"phone\": \"812-3456-7890\",\n  \"password\": \"Rahasia@123\",\n  \"confirm_password\": \"Rahasia@123\",\n  \"accept_terms\": true\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/register",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "register"
+                              ]
+                            }
+                          },
+                          "status": "Conflict",
+                          "code": 409,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"ALREADY_REGISTERED\",\n    \"message\": \"Data sudah terdaftar\",\n    \"details\": {\n      \"email\": \"Email sudah terdaftar. Gunakan email lain atau masuk.\",\n      \"phone\": \"Nomor WhatsApp sudah terdaftar. Gunakan nomor lain.\"\n    }\n  }\n}"
+                        },
+                        {
+                          "name": "Validasi gagal. `details` berisi pesan per field.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"full_name\": \"Budi Santoso\",\n  \"email\": \"budi.santoso@gmail.com\",\n  \"phone\": \"812-3456-7890\",\n  \"password\": \"Rahasia@123\",\n  \"confirm_password\": \"Rahasia@123\",\n  \"accept_terms\": true\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/register",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "register"
+                              ]
+                            }
+                          },
+                          "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                          "code": 422,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Data yang dikirim tidak valid\",\n    \"details\": {\n      \"password\": \"Kata sandi minimal 8 karakter\"\n    }\n  }\n}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "login",
+                  "item": [
+                    {
+                      "name": "whatsapp",
+                      "item": [
+                        {
+                          "name": "request-otp",
+                          "item": [
+                            {
+                              "name": "Kirim OTP login ke WhatsApp",
+                              "request": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"phone\": \"812-3456-7890\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/request-otp",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "login",
+                                    "whatsapp",
+                                    "request-otp"
+                                  ]
+                                },
+                                "description": "Selalu 200 walau nomor belum terdaftar (anti user-enumeration). Cooldown kirim-ulang 60 dtk, maks 5 OTP/jam."
+                              },
+                              "response": [
+                                {
+                                  "name": "OTP dikirim (jika akun ada)",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"phone\": \"812-3456-7890\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/request-otp",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login",
+                                        "whatsapp",
+                                        "request-otp"
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "body": "{\n  \"success\": true,\n  \"message\": \"string\",\n  \"data\": {\n    \"destination\": \"+6281*****890\",\n    \"expires_in\": 300,\n    \"resend_in\": 60,\n    \"debug_otp\": \"string\"\n  }\n}"
+                                },
+                                {
+                                  "name": "Validasi gagal. `details` berisi pesan per field.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"phone\": \"812-3456-7890\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/request-otp",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login",
+                                        "whatsapp",
+                                        "request-otp"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                                  "code": 422,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Data yang dikirim tidak valid\",\n    \"details\": {\n      \"password\": \"Kata sandi minimal 8 karakter\"\n    }\n  }\n}"
+                                },
+                                {
+                                  "name": "Cooldown kirim-ulang (OTP_RESEND_COOLDOWN) atau batas per jam (OTP_RATE_LIMITED). Lihat header `Retry-After`.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"phone\": \"812-3456-7890\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/request-otp",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login",
+                                        "whatsapp",
+                                        "request-otp"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Too Many Requests",
+                                  "code": 429,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"OTP_RESEND_COOLDOWN\",\n    \"message\": \"Tunggu sebentar sebelum meminta kode baru\",\n    \"details\": {\n      \"retry_after\": 42\n    }\n  }\n}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "verify-otp",
+                          "item": [
+                            {
+                              "name": "Verifikasi OTP dan login",
+                              "request": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"phone\": \"812-3456-7890\",\n  \"otp\": \"482910\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/verify-otp",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "login",
+                                    "whatsapp",
+                                    "verify-otp"
+                                  ]
+                                }
+                              },
+                              "response": [
+                                {
+                                  "name": "Berhasil",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"phone\": \"812-3456-7890\",\n  \"otp\": \"482910\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/verify-otp",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login",
+                                        "whatsapp",
+                                        "verify-otp"
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"data\": {\n    \"access_token\": \"string\",\n    \"refresh_token\": \"string\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 900,\n    \"user\": {\n      \"id\": \"5e5afcfb-8f69-66f9-94ee-63416391a604\",\n      \"full_name\": \"string\",\n      \"username\": \"string\",\n      \"email\": \"string\",\n      \"phone\": \"+6281234567890\",\n      \"email_verified\": true,\n      \"phone_verified\": true,\n      \"created_at\": \"2014-08-28T01:16:47.825Z\"\n    }\n  }\n}"
+                                },
+                                {
+                                  "name": "OTP tidak sesuai ('Kode OTP Tidak Sesuai')",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"phone\": \"812-3456-7890\",\n  \"otp\": \"482910\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/verify-otp",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login",
+                                        "whatsapp",
+                                        "verify-otp"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"OTP_INVALID\",\n    \"message\": \"Kode OTP tidak sesuai\",\n    \"details\": {\n      \"attempts_remaining\": 4\n    }\n  }\n}"
+                                },
+                                {
+                                  "name": "OTP kedaluwarsa (code: OTP_EXPIRED)",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"phone\": \"812-3456-7890\",\n  \"otp\": \"482910\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/verify-otp",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login",
+                                        "whatsapp",
+                                        "verify-otp"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Gone",
+                                  "code": 410,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "body": null
+                                },
+                                {
+                                  "name": "Validasi gagal. `details` berisi pesan per field.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"phone\": \"812-3456-7890\",\n  \"otp\": \"482910\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/verify-otp",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login",
+                                        "whatsapp",
+                                        "verify-otp"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                                  "code": 422,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Data yang dikirim tidak valid\",\n    \"details\": {\n      \"password\": \"Kata sandi minimal 8 karakter\"\n    }\n  }\n}"
+                                },
+                                {
+                                  "name": "Percobaan salah melebihi batas (code: OTP_MAX_ATTEMPTS)",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"phone\": \"812-3456-7890\",\n  \"otp\": \"482910\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/auth/login/whatsapp/verify-otp",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login",
+                                        "whatsapp",
+                                        "verify-otp"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Too Many Requests",
+                                  "code": 429,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "body": null
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "email",
+                      "item": [
+                        {
+                          "name": "Login dengan email/username + password",
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"identifier\": \"budi.santoso@gmail.com\",\n  \"password\": \"Rahasia@123\",\n  \"remember_me\": true\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/login",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "login"
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "name": "Berhasil",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"identifier\": \"budi.santoso@gmail.com\",\n  \"password\": \"Rahasia@123\",\n  \"remember_me\": true\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/login",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "login"
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"data\": {\n    \"access_token\": \"string\",\n    \"refresh_token\": \"string\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 900,\n    \"user\": {\n      \"id\": \"5e5afcfb-8f69-66f9-94ee-63416391a604\",\n      \"full_name\": \"string\",\n      \"username\": \"string\",\n      \"email\": \"string\",\n      \"phone\": \"+6281234567890\",\n      \"email_verified\": true,\n      \"phone_verified\": true,\n      \"created_at\": \"2014-08-28T01:16:47.825Z\"\n    }\n  }\n}"
+                            },
+                            {
+                              "name": "Kredensial salah. `details.attempts_remaining` = sisa percobaan (\"Sisa 2x\").",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"identifier\": \"budi.santoso@gmail.com\",\n  \"password\": \"Rahasia@123\",\n  \"remember_me\": true\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/login",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "login"
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"INVALID_CREDENTIALS\",\n    \"message\": \"Email/username atau kata sandi salah\",\n    \"details\": {\n      \"attempts_remaining\": 2,\n      \"max_attempts\": 5\n    }\n  }\n}"
+                            },
+                            {
+                              "name": "Validasi gagal. `details` berisi pesan per field.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"identifier\": \"budi.santoso@gmail.com\",\n  \"password\": \"Rahasia@123\",\n  \"remember_me\": true\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/login",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "login"
+                                  ]
+                                }
+                              },
+                              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                              "code": 422,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Data yang dikirim tidak valid\",\n    \"details\": {\n      \"password\": \"Kata sandi minimal 8 karakter\"\n    }\n  }\n}"
+                            },
+                            {
+                              "name": "Akun terkunci sementara (header `Retry-After` dalam detik)",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"identifier\": \"budi.santoso@gmail.com\",\n  \"password\": \"Rahasia@123\",\n  \"remember_me\": true\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/login",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "login"
+                                  ]
+                                }
+                              },
+                              "status": "Locked (WebDAV) (RFC 4918)",
+                              "code": 423,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"ACCOUNT_LOCKED\",\n    \"message\": \"Akun dikunci sementara karena terlalu banyak percobaan gagal\",\n    \"details\": {\n      \"retry_after\": 900\n    }\n  }\n}"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "password",
+                  "item": [
+                    {
+                      "name": "forgot",
+                      "item": [
+                        {
+                          "name": "Kirim OTP reset password via email atau WhatsApp",
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/password/forgot",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "password",
+                                "forgot"
+                              ]
+                            },
+                            "description": "Selalu 200 walau akun tidak ada (anti user-enumeration)."
+                          },
+                          "response": [
+                            {
+                              "name": "OTP dikirim (jika akun ada)",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/forgot",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "forgot"
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": true,\n  \"message\": \"string\",\n  \"data\": {\n    \"destination\": \"+6281*****890\",\n    \"expires_in\": 300,\n    \"resend_in\": 60,\n    \"debug_otp\": \"string\"\n  }\n}"
+                            },
+                            {
+                              "name": "Validasi gagal. `details` berisi pesan per field.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/forgot",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "forgot"
+                                  ]
+                                }
+                              },
+                              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                              "code": 422,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Data yang dikirim tidak valid\",\n    \"details\": {\n      \"password\": \"Kata sandi minimal 8 karakter\"\n    }\n  }\n}"
+                            },
+                            {
+                              "name": "Cooldown kirim-ulang (OTP_RESEND_COOLDOWN) atau batas per jam (OTP_RATE_LIMITED). Lihat header `Retry-After`.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/forgot",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "forgot"
+                                  ]
+                                }
+                              },
+                              "status": "Too Many Requests",
+                              "code": 429,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"OTP_RESEND_COOLDOWN\",\n    \"message\": \"Tunggu sebentar sebelum meminta kode baru\",\n    \"details\": {\n      \"retry_after\": 42\n    }\n  }\n}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "verify-otp",
+                      "item": [
+                        {
+                          "name": "Verifikasi OTP reset, dapatkan reset_token",
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\",\n  \"otp\": \"482910\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/password/verify-otp",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "password",
+                                "verify-otp"
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "name": "OTP valid",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\",\n  \"otp\": \"482910\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/verify-otp",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "verify-otp"
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": true,\n  \"message\": \"string\",\n  \"data\": {\n    \"reset_token\": \"string\",\n    \"expires_in\": 600\n  }\n}"
+                            },
+                            {
+                              "name": "OTP_INVALID",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\",\n  \"otp\": \"482910\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/verify-otp",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "verify-otp"
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "body": null
+                            },
+                            {
+                              "name": "OTP_EXPIRED",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\",\n  \"otp\": \"482910\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/verify-otp",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "verify-otp"
+                                  ]
+                                }
+                              },
+                              "status": "Gone",
+                              "code": 410,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "body": null
+                            },
+                            {
+                              "name": "Validasi gagal. `details` berisi pesan per field.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\",\n  \"otp\": \"482910\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/verify-otp",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "verify-otp"
+                                  ]
+                                }
+                              },
+                              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                              "code": 422,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Data yang dikirim tidak valid\",\n    \"details\": {\n      \"password\": \"Kata sandi minimal 8 karakter\"\n    }\n  }\n}"
+                            },
+                            {
+                              "name": "OTP_MAX_ATTEMPTS",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"method\": \"email\",\n  \"destination\": \"contoh.nasabah@gmail.com\",\n  \"otp\": \"482910\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/verify-otp",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "verify-otp"
+                                  ]
+                                }
+                              },
+                              "status": "Too Many Requests",
+                              "code": 429,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "body": null
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "reset",
+                      "item": [
+                        {
+                          "name": "Atur kata sandi baru (reset_token sekali pakai) dan langsung login",
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"reset_token\": \"eyJhbGciOi...\",\n  \"new_password\": \"Baru@12345\",\n  \"confirm_password\": \"Baru@12345\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/password/reset",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "password",
+                                "reset"
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "name": "Password diganti",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"reset_token\": \"eyJhbGciOi...\",\n  \"new_password\": \"Baru@12345\",\n  \"confirm_password\": \"Baru@12345\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/reset",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "reset"
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"data\": {\n    \"access_token\": \"string\",\n    \"refresh_token\": \"string\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 900,\n    \"user\": {\n      \"id\": \"5e5afcfb-8f69-66f9-94ee-63416391a604\",\n      \"full_name\": \"string\",\n      \"username\": \"string\",\n      \"email\": \"string\",\n      \"phone\": \"+6281234567890\",\n      \"email_verified\": true,\n      \"phone_verified\": true,\n      \"created_at\": \"2014-08-28T01:16:47.825Z\"\n    }\n  }\n}"
+                            },
+                            {
+                              "name": "INVALID_TOKEN / TOKEN_EXPIRED (reset_token tidak valid atau sudah dipakai)",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"reset_token\": \"eyJhbGciOi...\",\n  \"new_password\": \"Baru@12345\",\n  \"confirm_password\": \"Baru@12345\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/reset",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "reset"
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "body": null
+                            },
+                            {
+                              "name": "Validasi gagal. `details` berisi pesan per field.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"reset_token\": \"eyJhbGciOi...\",\n  \"new_password\": \"Baru@12345\",\n  \"confirm_password\": \"Baru@12345\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/auth/password/reset",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "auth",
+                                    "password",
+                                    "reset"
+                                  ]
+                                }
+                              },
+                              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                              "code": 422,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Data yang dikirim tidak valid\",\n    \"details\": {\n      \"password\": \"Kata sandi minimal 8 karakter\"\n    }\n  }\n}"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "refresh",
+                  "item": [
+                    {
+                      "name": "Tukar refresh token (rotasi)",
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"refresh_token\": \"string\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/auth/refresh",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "refresh"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "Token baru",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"refresh_token\": \"string\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/refresh",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "refresh"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"data\": {\n    \"access_token\": \"string\",\n    \"refresh_token\": \"string\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 900,\n    \"user\": {\n      \"id\": \"5e5afcfb-8f69-66f9-94ee-63416391a604\",\n      \"full_name\": \"string\",\n      \"username\": \"string\",\n      \"email\": \"string\",\n      \"phone\": \"+6281234567890\",\n      \"email_verified\": true,\n      \"phone_verified\": true,\n      \"created_at\": \"2014-08-28T01:16:47.825Z\"\n    }\n  }\n}"
+                        },
+                        {
+                          "name": "INVALID_TOKEN",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"refresh_token\": \"string\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/refresh",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "refresh"
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "body": null
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "logout",
+                  "item": [
+                    {
+                      "name": "Cabut refresh token",
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"refresh_token\": \"string\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/auth/logout",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "logout"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "Berhasil (idempotent)",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"refresh_token\": \"string\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/logout",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "logout"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "body": null
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "me",
+              "item": [
+                {
+                  "name": "Profil user yang sedang login",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/me",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "me"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/me",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "me"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"success\": true,\n  \"message\": \"string\",\n  \"data\": {\n    \"id\": \"1842cb7e-bf29-6a46-968e-7511f76ab401\",\n    \"full_name\": \"string\",\n    \"username\": \"string\",\n    \"email\": \"string\",\n    \"phone\": \"+6281234567890\",\n    \"email_verified\": false,\n    \"phone_verified\": false,\n    \"created_at\": \"1956-10-27T13:31:05.979Z\"\n  }\n}"
+                    },
+                    {
+                      "name": "UNAUTHENTICATED / INVALID_TOKEN / TOKEN_EXPIRED",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/me",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "me"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "health",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "up",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/health",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "health"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    }
+  ]
+}
