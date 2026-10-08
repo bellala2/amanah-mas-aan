@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{base_url}}/api/v1/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "identifier": "{{email}}",
+      "password": "{{password}}",
+      "remember_me": true
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('status 200', () => pm.response.to.have.status(200));
+      const j = pm.response.json();
+      if (j.data && j.data.access_token) {
+        pm.collectionVariables.set('access_token', j.data.access_token);
+        pm.collectionVariables.set('refresh_token', j.data.refresh_token);
+      }
+    language: text/javascript
+order: 1000

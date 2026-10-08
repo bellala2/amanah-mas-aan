@@ -1,0 +1,49 @@
+// Paste ke https://dbdiagram.io untuk melihat/ekspor ERD sebagai gambar.
+Table users {
+  id uuid [pk, default: `gen_random_uuid()`]
+  full_name varchar(100) [not null]
+  username varchar(30) [unique]
+  email varchar(254) [not null, unique]
+  phone varchar(16) [not null, unique, note: 'E.164']
+  password_hash varchar(100) [not null]
+  email_verified_at timestamptz
+  phone_verified_at timestamptz
+  status varchar(16) [not null, default: 'active']
+  failed_login_attempts smallint [not null, default: 0]
+  locked_until timestamptz
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+}
+
+Table otp_codes {
+  id uuid [pk, default: `gen_random_uuid()`]
+  user_id uuid [ref: > users.id]
+  channel varchar(16) [not null, note: 'whatsapp | email']
+  destination varchar(254) [not null]
+  purpose varchar(32) [not null, note: 'login | password_reset']
+  code_hash char(64) [not null]
+  attempts smallint [not null, default: 0]
+  max_attempts smallint [not null, default: 5]
+  expires_at timestamptz [not null]
+  verified_at timestamptz
+  consumed_at timestamptz
+  created_at timestamptz [not null, default: `now()`]
+  indexes {
+    (destination, purpose, created_at) [name: 'idx_otp_lookup']
+    user_id [name: 'idx_otp_user']
+  }
+}
+
+Table refresh_tokens {
+  id uuid [pk, default: `gen_random_uuid()`]
+  user_id uuid [not null, ref: > users.id]
+  token_hash char(64) [not null, unique]
+  expires_at timestamptz [not null]
+  revoked_at timestamptz
+  user_agent varchar(255) [not null, default: '']
+  ip_address varchar(45) [not null, default: '']
+  created_at timestamptz [not null, default: `now()`]
+  indexes {
+    expires_at [name: 'idx_refresh_expires']
+  }
+}

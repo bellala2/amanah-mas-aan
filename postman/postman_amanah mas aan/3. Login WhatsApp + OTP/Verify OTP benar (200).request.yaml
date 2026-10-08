@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{base_url}}/api/v1/auth/login/whatsapp/verify-otp"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "phone": "{{phone}}",
+      "otp": "{{otp}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('status 200', () => pm.response.to.have.status(200));
+      const j = pm.response.json();
+      if (j.data && j.data.access_token) {
+        pm.collectionVariables.set('access_token', j.data.access_token);
+        pm.collectionVariables.set('refresh_token', j.data.refresh_token);
+      }
+    language: text/javascript
+order: 3000

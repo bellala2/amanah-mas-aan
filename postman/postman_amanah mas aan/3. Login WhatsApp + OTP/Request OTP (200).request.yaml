@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{base_url}}/api/v1/auth/login/whatsapp/request-otp"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "phone": "{{phone}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('status 200', () => pm.response.to.have.status(200));
+      const d = pm.response.json().data; if (d && d.debug_otp) pm.collectionVariables.set('otp', d.debug_otp);
+    language: text/javascript
+order: 1000

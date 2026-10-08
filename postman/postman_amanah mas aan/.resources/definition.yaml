@@ -1,0 +1,11 @@
+$kind: collection
+description: Jalankan berurutan. Set DEBUG_OTP=true agar OTP otomatis tersimpan ke variabel {{otp}}.
+variables:
+  base_url: http://localhost:8080
+  email: budi.santoso@gmail.com
+  phone: 812-3456-7890
+  password: Rahasia@123
+  access_token: ""
+  refresh_token: ""
+  otp: ""
+  reset_token: ""

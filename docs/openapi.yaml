@@ -1,0 +1,334 @@
+openapi: 3.0.3
+info:
+  title: Amanah Auth API
+  version: 1.0.0
+  description: |
+    REST API autentikasi: Login Email, Login WhatsApp + OTP, Register, Lupa Password + OTP.
+
+    **Format response**
+    - Sukses: `{ "success": true, "message": "...", "data": {...} }`
+    - Error:  `{ "success": false, "error": { "code": "...", "message": "...", "details": {...} } }`
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Register
+  - name: Login Email
+  - name: Login WhatsApp
+  - name: Lupa Password
+  - name: Session
+
+paths:
+  /api/v1/auth/register:
+    post:
+      tags: [Register]
+      summary: Buat akun baru
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RegisterRequest' }
+            example:
+              full_name: Budi Santoso
+              email: budi.santoso@gmail.com
+              phone: "812-3456-7890"
+              password: "Rahasia@123"
+              confirm_password: "Rahasia@123"
+              accept_terms: true
+      responses:
+        '201': { description: Akun dibuat, langsung login, content: { application/json: { schema: { $ref: '#/components/schemas/AuthResponse' } } } }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/Validation' }
+
+  /api/v1/auth/login:
+    post:
+      tags: [Login Email]
+      summary: Login dengan email/username + password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginRequest' }
+            example: { identifier: budi.santoso@gmail.com, password: "Rahasia@123", remember_me: true }
+      responses:
+        '200': { description: Berhasil, content: { application/json: { schema: { $ref: '#/components/schemas/AuthResponse' } } } }
+        '401':
+          description: Kredensial salah. `details.attempts_remaining` = sisa percobaan ("Sisa 2x").
+          content:
+            application/json:
+              example:
+                success: false
+                error: { code: INVALID_CREDENTIALS, message: Email/username atau kata sandi salah, details: { attempts_remaining: 2, max_attempts: 5 } }
+        '422': { $ref: '#/components/responses/Validation' }
+        '423':
+          description: Akun terkunci sementara (header `Retry-After` dalam detik)
+          content:
+            application/json:
+              example:
+                success: false
+                error: { code: ACCOUNT_LOCKED, message: Akun dikunci sementara karena terlalu banyak percobaan gagal, details: { retry_after: 900 } }
+
+  /api/v1/auth/login/whatsapp/request-otp:
+    post:
+      tags: [Login WhatsApp]
+      summary: Kirim OTP login ke WhatsApp
+      description: Selalu 200 walau nomor belum terdaftar (anti user-enumeration). Cooldown kirim-ulang 60 dtk, maks 5 OTP/jam.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [phone], properties: { phone: { type: string, example: "812-3456-7890" } } }
+      responses:
+        '200': { $ref: '#/components/responses/OTPSent' }
+        '422': { $ref: '#/components/responses/Validation' }
+        '429': { $ref: '#/components/responses/TooMany' }
+
+  /api/v1/auth/login/whatsapp/verify-otp:
+    post:
+      tags: [Login WhatsApp]
+      summary: Verifikasi OTP dan login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/VerifyOTPLogin' }
+            example: { phone: "812-3456-7890", otp: "482910" }
+      responses:
+        '200': { description: Berhasil, content: { application/json: { schema: { $ref: '#/components/schemas/AuthResponse' } } } }
+        '400':
+          description: "OTP tidak sesuai ('Kode OTP Tidak Sesuai')"
+          content:
+            application/json:
+              example: { success: false, error: { code: OTP_INVALID, message: Kode OTP tidak sesuai, details: { attempts_remaining: 4 } } }
+        '410': { description: "OTP kedaluwarsa (code: OTP_EXPIRED)" }
+        '422': { $ref: '#/components/responses/Validation' }
+        '429': { description: "Percobaan salah melebihi batas (code: OTP_MAX_ATTEMPTS)" }
+
+  /api/v1/auth/password/forgot:
+    post:
+      tags: [Lupa Password]
+      summary: Kirim OTP reset password via email atau WhatsApp
+      description: Selalu 200 walau akun tidak ada (anti user-enumeration).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ForgotRequest' }
+            example: { method: email, destination: contoh.nasabah@gmail.com }
+      responses:
+        '200': { $ref: '#/components/responses/OTPSent' }
+        '422': { $ref: '#/components/responses/Validation' }
+        '429': { $ref: '#/components/responses/TooMany' }
+
+  /api/v1/auth/password/verify-otp:
+    post:
+      tags: [Lupa Password]
+      summary: Verifikasi OTP reset, dapatkan reset_token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/VerifyOTPReset' }
+            example: { method: email, destination: contoh.nasabah@gmail.com, otp: "482910" }
+      responses:
+        '200':
+          description: OTP valid
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Envelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          reset_token: { type: string }
+                          expires_in: { type: integer, example: 600 }
+        '400': { description: OTP_INVALID }
+        '410': { description: OTP_EXPIRED }
+        '422': { $ref: '#/components/responses/Validation' }
+        '429': { description: OTP_MAX_ATTEMPTS }
+
+  /api/v1/auth/password/reset:
+    post:
+      tags: [Lupa Password]
+      summary: Atur kata sandi baru (reset_token sekali pakai) dan langsung login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ResetRequest' }
+            example: { reset_token: "eyJhbGciOi...", new_password: "Baru@12345", confirm_password: "Baru@12345" }
+      responses:
+        '200': { description: Password diganti, content: { application/json: { schema: { $ref: '#/components/schemas/AuthResponse' } } } }
+        '401': { description: INVALID_TOKEN / TOKEN_EXPIRED (reset_token tidak valid atau sudah dipakai) }
+        '422': { $ref: '#/components/responses/Validation' }
+
+  /api/v1/auth/refresh:
+    post:
+      tags: [Session]
+      summary: Tukar refresh token (rotasi)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [refresh_token], properties: { refresh_token: { type: string } } }
+      responses:
+        '200': { description: Token baru, content: { application/json: { schema: { $ref: '#/components/schemas/AuthResponse' } } } }
+        '401': { description: INVALID_TOKEN }
+
+  /api/v1/auth/logout:
+    post:
+      tags: [Session]
+      summary: Cabut refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [refresh_token], properties: { refresh_token: { type: string } } }
+      responses:
+        '200': { description: Berhasil (idempotent) }
+
+  /api/v1/me:
+    get:
+      tags: [Session]
+      summary: Profil user yang sedang login
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Envelope'
+                  - type: object
+                    properties: { data: { $ref: '#/components/schemas/User' } }
+        '401': { description: UNAUTHENTICATED / INVALID_TOKEN / TOKEN_EXPIRED }
+
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200': { description: up }
+
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+
+  responses:
+    Validation:
+      description: Validasi gagal. `details` berisi pesan per field.
+      content:
+        application/json:
+          example:
+            success: false
+            error: { code: VALIDATION_ERROR, message: Data yang dikirim tidak valid, details: { password: Kata sandi minimal 8 karakter } }
+    Conflict:
+      description: Email dan/atau nomor WhatsApp sudah terdaftar
+      content:
+        application/json:
+          example:
+            success: false
+            error:
+              code: ALREADY_REGISTERED
+              message: Data sudah terdaftar
+              details: { email: "Email sudah terdaftar. Gunakan email lain atau masuk.", phone: "Nomor WhatsApp sudah terdaftar. Gunakan nomor lain." }
+    TooMany:
+      description: Cooldown kirim-ulang (OTP_RESEND_COOLDOWN) atau batas per jam (OTP_RATE_LIMITED). Lihat header `Retry-After`.
+      content:
+        application/json:
+          example:
+            success: false
+            error: { code: OTP_RESEND_COOLDOWN, message: Tunggu sebentar sebelum meminta kode baru, details: { retry_after: 42 } }
+    OTPSent:
+      description: OTP dikirim (jika akun ada)
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Envelope'
+              - type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      destination: { type: string, example: "+6281*****890" }
+                      expires_in: { type: integer, example: 300 }
+                      resend_in: { type: integer, example: 60 }
+                      debug_otp: { type: string, description: Hanya muncul bila DEBUG_OTP=true }
+
+  schemas:
+    Envelope:
+      type: object
+      properties:
+        success: { type: boolean }
+        message: { type: string }
+    User:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        full_name: { type: string }
+        username: { type: string }
+        email: { type: string }
+        phone: { type: string, example: "+6281234567890" }
+        email_verified: { type: boolean }
+        phone_verified: { type: boolean }
+        created_at: { type: string, format: date-time }
+    AuthResponse:
+      allOf:
+        - $ref: '#/components/schemas/Envelope'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                access_token: { type: string }
+                refresh_token: { type: string }
+                token_type: { type: string, example: Bearer }
+                expires_in: { type: integer, example: 900 }
+                user: { $ref: '#/components/schemas/User' }
+    RegisterRequest:
+      type: object
+      required: [full_name, email, phone, password, confirm_password, accept_terms]
+      properties:
+        full_name: { type: string, minLength: 3, maxLength: 100 }
+        username: { type: string, description: "Opsional, 3-30 karakter: a-z 0-9 _ ." }
+        email: { type: string, format: email }
+        phone: { type: string, description: "Nomor seluler Indonesia; menerima 08…, 62…, +62…, 8…" }
+        password: { type: string, minLength: 8, maxLength: 72, description: "Huruf besar+kecil, angka, simbol" }
+        confirm_password: { type: string }
+        accept_terms: { type: boolean }
+    LoginRequest:
+      type: object
+      required: [identifier, password]
+      properties:
+        identifier: { type: string, description: Email atau username }
+        password: { type: string }
+        remember_me: { type: boolean, description: "true = refresh token 30 hari (default 24 jam)" }
+    VerifyOTPLogin:
+      type: object
+      required: [phone, otp]
+      properties:
+        phone: { type: string }
+        otp: { type: string, pattern: '^\d{6}$' }
+    ForgotRequest:
+      type: object
+      required: [method, destination]
+      properties:
+        method: { type: string, enum: [email, whatsapp] }
+        destination: { type: string, description: Email atau nomor WhatsApp sesuai method }
+    VerifyOTPReset:
+      type: object
+      required: [method, destination, otp]
+      properties:
+        method: { type: string, enum: [email, whatsapp] }
+        destination: { type: string }
+        otp: { type: string, pattern: '^\d{6}$' }
+    ResetRequest:
+      type: object
+      required: [reset_token, new_password, confirm_password]
+      properties:
+        reset_token: { type: string }
+        new_password: { type: string }
+        confirm_password: { type: string }
