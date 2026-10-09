@@ -126,4 +126,4 @@ Satu baris per OTP yang dikirim (login WhatsApp & lupa password, via email/Whats
 - Pembersihan berkala (cron): `DELETE FROM otp_codes WHERE expires_at < now() - interval '1 day'` dan `DELETE FROM refresh_tokens WHERE expires_at < now() - interval '7 days'`.
 
 ### Database
-![Daftar Tabel](screenshot/tb-tabel.png)
+![Daftar Tabel](screenshot/tb-database.png)
