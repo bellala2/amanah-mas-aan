@@ -18,7 +18,7 @@ tags:
   - name: Session
 
 paths:
-  /api/v1/auth/register:
+  /auth/register:
     post:
       tags: [Register]
       summary: Buat akun baru
@@ -39,7 +39,7 @@ paths:
         '409': { $ref: '#/components/responses/Conflict' }
         '422': { $ref: '#/components/responses/Validation' }
 
-  /api/v1/auth/login:
+  /auth/login:
     post:
       tags: [Login Email]
       summary: Login dengan email/username + password
@@ -67,7 +67,7 @@ paths:
                 success: false
                 error: { code: ACCOUNT_LOCKED, message: Akun dikunci sementara karena terlalu banyak percobaan gagal, details: { retry_after: 900 } }
 
-  /api/v1/auth/login/whatsapp/request-otp:
+  /auth/login/whatsapp/request-otp:
     post:
       tags: [Login WhatsApp]
       summary: Kirim OTP login ke WhatsApp
@@ -82,7 +82,7 @@ paths:
         '422': { $ref: '#/components/responses/Validation' }
         '429': { $ref: '#/components/responses/TooMany' }
 
-  /api/v1/auth/login/whatsapp/verify-otp:
+  /auth/login/whatsapp/verify-otp:
     post:
       tags: [Login WhatsApp]
       summary: Verifikasi OTP dan login
@@ -103,7 +103,7 @@ paths:
         '422': { $ref: '#/components/responses/Validation' }
         '429': { description: "Percobaan salah melebihi batas (code: OTP_MAX_ATTEMPTS)" }
 
-  /api/v1/auth/password/forgot:
+  /auth/password/forgot:
     post:
       tags: [Lupa Password]
       summary: Kirim OTP reset password via email atau WhatsApp
@@ -119,7 +119,7 @@ paths:
         '422': { $ref: '#/components/responses/Validation' }
         '429': { $ref: '#/components/responses/TooMany' }
 
-  /api/v1/auth/password/verify-otp:
+  /auth/password/verify-otp:
     post:
       tags: [Lupa Password]
       summary: Verifikasi OTP reset, dapatkan reset_token
@@ -149,7 +149,7 @@ paths:
         '422': { $ref: '#/components/responses/Validation' }
         '429': { description: OTP_MAX_ATTEMPTS }
 
-  /api/v1/auth/password/reset:
+  /auth/password/reset:
     post:
       tags: [Lupa Password]
       summary: Atur kata sandi baru (reset_token sekali pakai) dan langsung login
@@ -164,7 +164,7 @@ paths:
         '401': { description: INVALID_TOKEN / TOKEN_EXPIRED (reset_token tidak valid atau sudah dipakai) }
         '422': { $ref: '#/components/responses/Validation' }
 
-  /api/v1/auth/refresh:
+  /auth/refresh:
     post:
       tags: [Session]
       summary: Tukar refresh token (rotasi)
@@ -177,7 +177,7 @@ paths:
         '200': { description: Token baru, content: { application/json: { schema: { $ref: '#/components/schemas/AuthResponse' } } } }
         '401': { description: INVALID_TOKEN }
 
-  /api/v1/auth/logout:
+  /auth/logout:
     post:
       tags: [Session]
       summary: Cabut refresh token
@@ -189,7 +189,7 @@ paths:
       responses:
         '200': { description: Berhasil (idempotent) }
 
-  /api/v1/me:
+  /me:
     get:
       tags: [Session]
       summary: Profil user yang sedang login
